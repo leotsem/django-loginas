@@ -6,7 +6,7 @@
 {% if change %}{% if not is_popup %}
   <ul class="object-tools">
     <li><a href="history/" class="historylink">History</a></li>
-    <li><a href="{% url "loginas-user-login" object_id %}">Log in as user</a></li>
+    <li><a href="{% url 'loginas-user-login' object_id request.user.id %}">Log in as user</a></li>
   </ul>
 {% endif %}{% endif %}
 {% endblock %}

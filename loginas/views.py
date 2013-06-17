@@ -35,7 +35,7 @@ def _load_module(path):
     return can_login_as
 
 
-def user_login(request, user_id):
+def user_login(request, user_id, from_user_id=None):
     user = User.objects.get(pk=user_id)
 
     CAN_LOGIN_AS = getattr(settings, "CAN_LOGIN_AS", lambda r, y: r.user.is_superuser)
@@ -60,5 +60,10 @@ def user_login(request, user_id):
     # Log the user in.
     if hasattr(user, 'backend'):
         login(request, user)
+
+    # Store the previous logged in user a session
+    if from_user_id and from_user_id is not user_id:
+        from_user = User.objects.get(pk=from_user_id)
+        request.session['impersonated_user'] = from_user
 
     return redirect("/")
